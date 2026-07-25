@@ -3,15 +3,19 @@ import path from "path"
 const __dirname = import.meta.dirname
 import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
-import { inspectAttr } from 'kimi-plugin-inspect-react'
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    devServer({ entry: "api/boot.ts", exclude: [/^\/(?!api\/).*$/] }),
-    inspectAttr(), react()],
+    devServer({ 
+      entry: "api/boot.ts", 
+      exclude: [/^\/(?!api\/).*$/],
+      infer: []
+    }),
+    react(),
+  ],
   server: {
     port: 3000,
+    host: true,
   },
   resolve: {
     alias: {
@@ -25,5 +29,15 @@ export default defineConfig({
   build: {
     outDir: path.resolve(__dirname, "dist/public"),
     emptyOutDir: true,
+    target: "es2020",
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router'],
+          'ui-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-popover', '@radix-ui/react-select'],
+          'form-vendor': ['react-hook-form', 'zod', '@hookform/resolvers'],
+        },
+      },
+    },
   },
-});
+})
