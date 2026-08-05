@@ -1,1 +1,10 @@
-{\n  "version": 2,\n  "env": {\n    "APP_ID": "@app-id",\n    "APP_SECRET": "@app-secret",\n    "DATABASE_URL": "@database-url"\n  },\n  "buildCommand": "cd app && npm ci && npm run db:push && npm run build",\n  "startCommand": "cd app && NODE_ENV=production node dist/boot.js",\n  "outputDirectory": "app/dist/public",\n  "regions": ["iad1"],\n  "functions": {\n    "api/boot.ts": {\n      "maxDuration": 60,\n      "memory": 1024\n    }\n  },\n  "rewrites": [\n    {\n      "source": "/api/trpc/:path*",\n      "destination": "/api/boot.ts"\n    },\n    {\n      "source": "/((?!api).*)",\n      "destination": "/index.html"\n    }\n  ],\n  "redirects": [\n    {\n      "source": "/index.html",\n      "destination": "/",\n      "permanent": true\n    }\n  ],\n  "headers": [\n    {\n      "source": "/api/:path*",\n      "headers": [\n        {\n          "key": "Content-Type",\n          "value": "application/json"\n        },\n        {\n          "key": "X-Content-Type-Options",\n          "value": "nosniff"\n        },\n        {\n          "key": "X-Frame-Options",\n          "value": "DENY"\n        },\n        {\n          "key": "X-XSS-Protection",\n          "value": "1; mode=block"\n        },\n        {\n          "key": "Referrer-Policy",\n          "value": "strict-origin-when-cross-origin"\n        }\n      ]\n    },\n    {\n      "source": "/assets/:path*",\n      "headers": [\n        {\n          "key": "Cache-Control",\n          "value": "public, max-age=31536000, immutable"\n        }\n      ]\n    }\n  ]\n}\n
+{
+  "version": 2,
+  "env": {
+    "APP_ID": "@app-id",
+    "APP_SECRET": "@app-secret",
+    "DATABASE_URL": "@database-url"
+  },
+  "buildCommand": "cd app && npm ci && npm run vercel-build",
+  "outputDirectory": "app/dist"
+}
