@@ -1,0 +1,273 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 4%;
+    --foreground: 0 0% 96%;
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 96%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 116 100% 54%;
+    --primary-foreground: 0 0% 4%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 96%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 116 100% 54%;
+    --accent-foreground: 0 0% 4%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 16%;
+    --input: 0 0% 18%;
+    --ring: 116 100% 54%;
+    --radius: 0.5rem;
+  }
+}
+
+:root {
+  --obsidian: #0a0a0a;
+  --charcoal: #121212;
+  --neon: #39ff14;
+  --neon-dim: rgba(57, 255, 20, 0.35);
+  --steel: #8a8f8a;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+body {
+  background: var(--obsidian);
+  color: #f2f2f2;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+@media (pointer: coarse) {
+  body {
+    cursor: auto;
+  }
+}
+
+.font-display {
+  font-family: "Archivo", sans-serif;
+}
+.font-mono2 {
+  font-family: "JetBrains Mono", monospace;
+}
+
+::selection {
+  background: var(--neon);
+  color: #0a0a0a;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+  background: #232323;
+  border: 2px solid #0a0a0a;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--neon-dim);
+}
+
+/* ---------- Film grain ---------- */
+.grain-overlay {
+  position: fixed;
+  inset: -100%;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain-shift 0.9s steps(4) infinite;
+}
+@keyframes grain-shift {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-2%, 3%); }
+  50% { transform: translate(3%, -2%); }
+  75% { transform: translate(-3%, -3%); }
+  100% { transform: translate(2%, 2%); }
+}
+
+/* ---------- Custom cursor ---------- */
+.aw-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  pointer-events: none;
+  mix-blend-mode: difference;
+}
+.aw-cursor-ring {
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid #9a9a9a;
+  border-radius: 9999px;
+  transform: translate(-50%, -50%);
+  transition:
+    width 0.25s ease,
+    height 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.aw-cursor.drag .aw-cursor-ring {
+  width: 92px;
+  height: 92px;
+  background: var(--neon);
+  border-color: var(--neon);
+  mix-blend-mode: normal;
+  animation: cursor-pulse 1.4s ease-in-out infinite;
+}
+.aw-cursor.hovering .aw-cursor-ring {
+  width: 56px;
+  height: 56px;
+  border-color: var(--neon);
+}
+.aw-cursor-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #0a0a0a;
+  opacity: 0;
+  text-align: center;
+  line-height: 1.2;
+  transition: opacity 0.2s ease;
+}
+.aw-cursor.drag .aw-cursor-label {
+  opacity: 1;
+}
+@keyframes cursor-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(57, 255, 20, 0.45); }
+  50% { box-shadow: 0 0 0 14px rgba(57, 255, 20, 0); }
+}
+@media (pointer: coarse) {
+  .aw-cursor { display: none; }
+}
+
+/* ---------- Marquee ---------- */
+@keyframes marquee-x {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee-x 28s linear infinite;
+}
+
+/* ---------- Sound wave bars ---------- */
+@keyframes wave-bar {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+.wave-bar {
+  transform-origin: center;
+  animation: wave-bar 1s ease-in-out infinite;
+}
+
+/* ---------- Biometric preloader ---------- */
+@keyframes scan-sweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.scan-sweep {
+  animation: scan-sweep 2.4s linear infinite;
+}
+@keyframes blink-soft {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+.blink-soft {
+  animation: blink-soft 1.6s ease-in-out infinite;
+}
+
+/* ---------- Reveal helpers ---------- */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(60px);
+}
+
+/* ---------- Sketchfab frame ---------- */
+.showroom-frame {
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(57, 255, 20, 0.05), transparent 60%),
+    #101010;
+}
+
+/* ---------- Glass ---------- */
+.glass-panel {
+  background: rgba(18, 18, 18, 0.72);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ---------- Neon text glow ---------- */
+.neon-glow {
+  text-shadow:
+    0 0 12px rgba(57, 255, 20, 0.55),
+    0 0 48px rgba(57, 255, 20, 0.25);
+}
+
+/* ---------- Outline display text ---------- */
+.text-stroke {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.22);
+  color: transparent;
+}
+
+/* ---------- Skip intro button border draw ---------- */
+.skip-btn svg rect {
+  stroke-dasharray: 420;
+  stroke-dashoffset: 420;
+  transition: stroke-dashoffset 0.6s ease;
+}
+.skip-btn:hover svg rect {
+  stroke-dashoffset: 0;
+}
+
+/* ---------- Inputs ---------- */
+.aw-input {
+  background: #141414;
+  border: 1px solid #262626;
+  color: #f2f2f2;
+  border-radius: 6px;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.85rem;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.aw-input:focus {
+  border-color: var(--neon);
+}
+
+/* scroll progress bar */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--neon);
+  z-index: 120;
+  width: 0%;
+  box-shadow: 0 0 12px var(--neon-dim);
+}

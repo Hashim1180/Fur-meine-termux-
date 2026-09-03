@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1788331700801,
+      "tag": "20260902064820_greedy_shadow_king",
+      "breakpoints": true
+    }
+  ]
+}
