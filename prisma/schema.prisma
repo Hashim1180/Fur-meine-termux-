@@ -1,0 +1,69 @@
+// AW GYMS 2.0 — Prisma schema
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  category    String
+  tagline     String
+  description String
+  pricePKR    Int
+  badges      String   @default("") // pipe-separated
+  image       String   @default("") // path under /media
+  video       String   @default("") // optional product video path
+  model3d     String   @default("") // optional Sketchfab embed url
+  featured    Boolean  @default(false)
+  inStock     Boolean  @default(true)
+  rating      Float    @default(5)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  subtitle    String
+  description String
+  location    String
+  capacity    Int      @default(20)
+  enrolled    Int      @default(0)
+  durationDays Int     @default(15)
+  startDate   DateTime
+  endDate     DateTime
+  accent      String   @default("neon") // neon | crimson | gold
+  archived    Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Media {
+  id        String   @id @default(cuid())
+  type      String   // photo | video | audio
+  name      String
+  path      String   // path under /media
+  mime      String
+  size      Int
+  tag       String   @default("") // hero | facility | product | ambient | ui
+  createdAt DateTime @default(now())
+}
+
+model Setting {
+  id    String @id
+  value String
+}
+
+model AdminSession {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+}
