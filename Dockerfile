@@ -4,6 +4,10 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED 1
+
+# Generate Prisma Client BEFORE building Next.js
+RUN npx prisma generate
+
 RUN npm run build
 
 FROM node:20-alpine AS runner
